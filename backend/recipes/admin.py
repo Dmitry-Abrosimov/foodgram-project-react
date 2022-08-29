@@ -1,3 +1,85 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import (
+    Tag,
+    Ingredient,
+    Recipe,
+    IngredientRecipe,
+    Favorite,
+    ShoppingList,
+)
+
+
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'name',
+        'slug'
+    )
+
+
+@admin.register(Ingredient)
+class IngredientAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'name',
+        'measurement_unit'
+    )
+    list_filter = ('name',)
+
+
+class IngredientRecipeInline(admin.TabularInline):
+    model = IngredientRecipe
+    min_num = 1
+    extra = 1
+
+
+@admin.register(Recipe)
+class RecipeAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'name',
+        'author',
+        'amount_favorites',
+        'get_tags',
+    )
+    list_filter = (
+        'author',
+        'name',
+        'tags'
+    )
+    search_fields = ('name',)
+    inlines = (IngredientRecipeInline,)
+    empty_value_display = '-пусто-'
+
+    def amount_favorites(self, obj):
+        return obj.favorites.count()
+
+
+@admin.register(IngredientRecipe)
+class IngredientAmountAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'ingredient',
+        'recipe',
+        'amount'
+    )
+
+
+@admin.register(Favorite)
+class FavoriteAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'user',
+        'recipe'
+    )
+
+
+@admin.register(ShoppingList)
+class ShoppingListAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'user',
+        'recipe'
+    )

@@ -2,8 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
-class User(AbstractUser):
-    """Кастомная модель пользователя."""
+class User(AbstractUser):    
 
     username = models.CharField(
         max_length=150,
@@ -32,8 +31,7 @@ class User(AbstractUser):
         ordering = ('username',)
 
 
-class Follow(models.Model):
-    """Модель подписок."""
+class Follow(models.Model):    
 
     user = models.ForeignKey(
         User,
