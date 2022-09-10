@@ -1,3 +1,5 @@
+
+
 from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator
 from django.db import models
@@ -10,11 +12,11 @@ User = get_user_model()
 class Ingredient(models.Model):
     name = models.CharField(
         max_length=200,
-        verbose_name='Название ингредиента',
+        verbose_name='Название',
     )
     measurement_unit = models.CharField(
         max_length=200,
-        verbose_name='Единица измерения',
+        verbose_name='Единицы измерения',
     )
 
     class Meta:
@@ -29,10 +31,10 @@ class Tag(models.Model):
     name = models.CharField(
         unique=True,
         max_length=200,
-        verbose_name='Название тега',
+        verbose_name='Название',
     )
     color = ColorField(
-        verbose_name='Цвет',
+        verbose_name='Цветовой HEX-код',
         null=True,
     )
     slug = models.SlugField(max_length=200, unique=True)
@@ -54,7 +56,7 @@ class Recipe(models.Model):
     )
     name = models.CharField(
         max_length=200,
-        verbose_name='Название рецепта',
+        verbose_name='Название',
     )
     image = models.ImageField(
         verbose_name='Картинка',
@@ -72,11 +74,11 @@ class Recipe(models.Model):
         related_name='recipes',
     )
     cooking_time = models.PositiveIntegerField(
-        verbose_name='Время приготовления',
         validators=[MinValueValidator(
             1,
             'Время приготовления не может быть меньше 1 минуты',
         )],
+        verbose_name='Время приготовления в минутах',
     )
     pub_date = models.DateTimeField('Дата публикации', auto_now_add=True)
 
@@ -94,20 +96,18 @@ class IngredientRecipe(models.Model):
         Ingredient,
         on_delete=models.CASCADE,
         related_name='ingredient_amounts',
-        verbose_name='Ингредиент',
     )
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
         related_name='ingredient_amounts',
-        verbose_name='Рецепт',
     )
     amount = models.PositiveIntegerField(
-        verbose_name='Количество',
         validators=[MinValueValidator(
             1,
             'Количество не может быть меньше 1',
         )],
+        verbose_name='Количество',
     )
 
     class Meta:

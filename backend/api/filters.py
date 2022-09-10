@@ -11,21 +11,21 @@ class IngredientSearchFilter(SearchFilter):
 class RecipeFilter(FilterSet):
 
     tags = filters.AllValuesMultipleFilter(field_name='tags__slug')
+    is_favorited = filters.BooleanFilter(method='filter_is_favorited')
     is_in_shopping_cart = filters.BooleanFilter(
-        method='shopping_cart_filter'
+        method='filter_is_in_shopping_cart'
     )
-    is_favorited = filters.BooleanFilter(method='favorited_filter')
 
     class Meta:
         model = Recipe
         fields = ('tags', 'author', 'is_favorited', 'is_in_shopping_cart')
 
-    def shopping_cart_filter(self, queryset, name, value):
-        if value:
-            return queryset.filter(shop_list__user=self.request.user)
-        return queryset
-
-    def favorited_filter(self, queryset, name, value):
+    def filter_is_favorited(self, queryset, name, value):
         if value:
             return queryset.filter(favorites__user=self.request.user)
+        return queryset
+
+    def filter_is_in_shopping_cart(self, queryset, name, value):
+        if value:
+            return queryset.filter(shop_list__user=self.request.user)
         return queryset

@@ -1,13 +1,17 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+#from .validators import validate_user
 
-class User(AbstractUser):    
+
+class User(AbstractUser):
+    """Кастомная модель пользователя."""
 
     username = models.CharField(
         max_length=150,
-        unique=True,        
-        verbose_name='Имя пользователя',
+        unique=True,
+        #validators=[validate_user],
+        verbose_name='Логин',
     )
     password = models.CharField(
         max_length=150,
@@ -31,7 +35,8 @@ class User(AbstractUser):
         ordering = ('username',)
 
 
-class Follow(models.Model):    
+class Follow(models.Model):
+    """Модель подписок."""
 
     user = models.ForeignKey(
         User,
