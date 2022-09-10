@@ -135,5 +135,3 @@ dmypy.json
 frontend/
 #build/
 #node_modules/
-
-*.DS_Store
