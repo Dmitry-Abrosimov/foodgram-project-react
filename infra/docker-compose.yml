@@ -8,7 +8,7 @@ services:
     env_file:
       - .env
   backend:
-    image: ncolemann/backend_foodgram
+    image: zaqer/foodgram
     volumes:
       - static_value:/app/static/
       - media_value:/app/media/
@@ -17,7 +17,7 @@ services:
     env_file:
       - .env
   frontend:
-    image: ncolemann/frontend_foodgram
+    image: zaqer/foodgram_frontend
     volumes:
       - result_build:/app/result_build/build/
     depends_on:
