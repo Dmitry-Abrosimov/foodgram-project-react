@@ -17,7 +17,7 @@ User = get_user_model()
 
 
 class CustomUserCreateSerializer(UserCreateSerializer):
-    
+
     class Meta:
         model = User
         fields = (
@@ -43,7 +43,7 @@ class CustomUserCreateSerializer(UserCreateSerializer):
 
 
 class CustomUserSerializer(UserSerializer):
-    
+
     is_subscribed = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
@@ -65,14 +65,14 @@ class CustomUserSerializer(UserSerializer):
 
 
 class IngredientSerializer(serializers.ModelSerializer):
-    
+
     class Meta:
         model = Ingredient
         fields = '__all__'
 
 
 class IngredientRecipeSerializer(serializers.ModelSerializer):
-    
+
     id = serializers.ReadOnlyField(source='ingredient.id')
     name = serializers.ReadOnlyField(source='ingredient.name')
     measurement_unit = serializers.ReadOnlyField(
@@ -85,7 +85,7 @@ class IngredientRecipeSerializer(serializers.ModelSerializer):
 
 
 class AddIngredientSerializer(serializers.ModelSerializer):
-    
+
     id = serializers.PrimaryKeyRelatedField(queryset=Ingredient.objects.all())
 
     class Meta:
@@ -94,14 +94,14 @@ class AddIngredientSerializer(serializers.ModelSerializer):
 
 
 class TagSerializer(serializers.ModelSerializer):
-    
+
     class Meta:
         model = Tag
         fields = '__all__'
 
 
 class RecipeSerializer(serializers.ModelSerializer):
-    
+
     author = CustomUserSerializer(read_only=True)
     ingredients = serializers.SerializerMethodField(read_only=True)
     tags = TagSerializer(many=True, read_only=True)
@@ -145,7 +145,7 @@ class RecipeSerializer(serializers.ModelSerializer):
 
 
 class RecipeCreateSerializer(serializers.ModelSerializer):
-    
+
     author = CustomUserSerializer(read_only=True)
     ingredients = AddIngredientSerializer(many=True)
     tags = serializers.PrimaryKeyRelatedField(
@@ -242,7 +242,7 @@ class ShortRecipeSerializer(serializers.ModelSerializer):
 
 
 class FavoriteSerializer(ShortRecipeSerializer):
-    
+
     class Meta:
         model = Favorite
         fields = ('user', 'recipe')
@@ -266,7 +266,7 @@ class ShoppingListSerializer(ShortRecipeSerializer):
 
 
 class FollowSerializer(CustomUserSerializer):
-    
+
     recipes = serializers.SerializerMethodField(read_only=True)
     recipes_count = serializers.SerializerMethodField(read_only=True)
 
