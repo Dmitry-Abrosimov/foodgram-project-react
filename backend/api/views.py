@@ -1,39 +1,24 @@
 from django.contrib.auth import get_user_model
-from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
+from djoser.views import UserViewSet
+from recipes.models import Favorite, Ingredient, Recipe, ShoppingList, Tag
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
-from rest_framework.permissions import (
-    IsAuthenticatedOrReadOnly,
-    IsAuthenticated,
-)
+from rest_framework.generics import ListAPIView
+from rest_framework.permissions import (IsAuthenticated,
+                                        IsAuthenticatedOrReadOnly)
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView
-from djoser.views import UserViewSet
+from users.models import Follow
 
 from .filters import IngredientSearchFilter, RecipeFilter
 from .permissions import IsAuthorOrAdminPermission
-from recipes.models import (
-    Ingredient,
-    Tag,
-    Recipe,
-    Favorite,
-    ShoppingList,
-    IngredientRecipe,
-)
-from users.models import Follow
-from .serializers import (
-    IngredientSerializer,
-    TagSerializer,
-    RecipeSerializer,
-    RecipeCreateSerializer,
-    FavoriteSerializer,
-    ShoppingListSerializer,
-    FollowSerializer,
-    CustomUserSerializer,
-)
+from .serializers import (CustomUserSerializer, FavoriteSerializer,
+                          FollowSerializer, IngredientSerializer,
+                          RecipeCreateSerializer, RecipeSerializer,
+                          ShoppingListSerializer, TagSerializer)
+from .utils import get_shopping_list
 
 User = get_user_model()
 
@@ -161,37 +146,10 @@ class RecipeViewSet(viewsets.ModelViewSet):
             )
         return self.delete_object(request=request, pk=pk, model=ShoppingList)
 
-    def __list_to_display(self, shopping_list):
-        list_display = ([
-            f"- {item}: {value['amount']} {value['measurement_unit']}\n"
-            for item, value in shopping_list.items()
-        ])
-        return list_display
-
     @action(
         detail=False,
         methods=('get',),
         permission_classes=(IsAuthenticated,),
     )
     def download_shopping_cart(self, request):
-        shopping_list = {}
-        ingredients = IngredientRecipe.objects.filter(
-            recipe__shop_list__user=request.user
-        )
-        for ingredient in ingredients:
-            name = ingredient.ingredient.name
-            measurement_unit = ingredient.ingredient.measurement_unit
-            amount = ingredient.amount
-            if name not in shopping_list:
-                shopping_list[name] = {
-                    'measurement_unit': measurement_unit,
-                    'amount': amount,
-                }
-            else:
-                shopping_list[name]['amount'] += amount
-        main_list = self.__list_to_display(shopping_list)
-        response = HttpResponse(main_list, 'Content-Type: text/plain')
-        response['Content-Disposition'] = (
-            'attachment; filename="ShoppingList.txt"'
-        )
-        return response
+        return get_shopping_list(request)
