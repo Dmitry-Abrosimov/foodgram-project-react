@@ -1,4 +1,5 @@
 import os
+
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -26,10 +27,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'djoser',
-    'colorfield',
-    'api',
+    'colorfield',    
     'recipes',
     'users',
+    'api',
 ]
 
 MIDDLEWARE = [
