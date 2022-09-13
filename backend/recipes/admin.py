@@ -37,7 +37,7 @@ class RecipeAdmin(admin.ModelAdmin):
         'name',
         'author',
         'amount_favorites',
-        'get_tags',
+        # 'get_tags',
     )
     list_filter = ('author', 'name', 'tags')
     search_fields = ('name',)
@@ -50,8 +50,8 @@ class RecipeAdmin(admin.ModelAdmin):
     amount_favorites.short_description = 'Число добавлений в избранное'
 
     def get_tags(self, obj):
-        return "\n".join(
-            [tag[0] for tag in obj.tags.values_list('name', flat=True)]
+        return '\n'.join(
+            list(*zip(*obj.tags.values_list('name', flat=True)))
         )
 
     get_tags.short_description = 'Теги'

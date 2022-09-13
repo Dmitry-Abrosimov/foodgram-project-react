@@ -1,11 +1,10 @@
-from django.http import HttpResponse
 from recipes.models import IngredientRecipe
 
 
-def get_shopping_list(request):
+def get_shopping_list(user):
     shopping_list = {}
     ingredients = IngredientRecipe.objects.filter(
-        recipe__shop_list__user=request.user
+        recipe__shop_list__user=user.user
     )
     for ingredient in ingredients:
         name = ingredient.ingredient.name
@@ -22,9 +21,4 @@ def get_shopping_list(request):
         f"- {item}: {value['amount']} {value['measurement_unit']}\n"
         for item, value in shopping_list.items()
     ])
-    filename = 'shopping-list.txt'
-    response = HttpResponse(list_display, content_type='text/plain')
-    response['Content-Disposition'] = (
-        'attachment; filename={0}'.format(filename)
-    )
-    return response
+    return list_display
