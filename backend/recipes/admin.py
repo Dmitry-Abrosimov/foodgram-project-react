@@ -51,7 +51,7 @@ class RecipeAdmin(admin.ModelAdmin):
 
     def get_tags(self, obj):
         return '\n'.join(
-            list(*zip(*obj.tags.values_list('name', flat=True)))
+            list(obj.tags.values_list('name', flat=True))
         )
 
     get_tags.short_description = 'Теги'
