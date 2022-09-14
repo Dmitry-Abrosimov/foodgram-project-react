@@ -37,7 +37,7 @@ class RecipeAdmin(admin.ModelAdmin):
         'name',
         'author',
         'amount_favorites',
-        # 'get_tags',
+        'get_tags',
     )
     list_filter = ('author', 'name', 'tags')
     search_fields = ('name',)
