@@ -69,7 +69,7 @@ jobs:
             sudo docker-compose stop
             sudo docker-compose rm backend
             sudo systemctl stop nginx
-            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/backend_foodgram:latest
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/foodgram:latest
             touch .env
             echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
             echo DB_NAME=${{ secrets.DB_NAME }} >> .env
