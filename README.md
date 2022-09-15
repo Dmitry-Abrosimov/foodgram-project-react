@@ -1,4 +1,5 @@
 # Foodgram
+![yamdb workflow](https://github.com/Dmitry-Abrosimov/foodgram-project-react/actions/workflows/foodgram-project-react.yml/badge.svg)
 
 ## Технологии:
 
