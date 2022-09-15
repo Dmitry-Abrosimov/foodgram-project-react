@@ -1,5 +1,5 @@
 # Foodgram
-![foodgram workflow](https://github.com/Dmitry-Abrosimov/foodgram-project-react/actions/workflows/main.yml/badge.svg)
+![foodgram workflow](https://github.com/Dmitry-Abrosimov/foodgram-project-react/actions/workflows/main.yaml/badge.svg)
 
 Сервер http://158.160.9.114/
 
