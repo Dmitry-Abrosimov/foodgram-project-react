@@ -3,22 +3,36 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from djoser.views import UserViewSet
-from recipes.models import Favorite, Ingredient, Recipe, ShoppingList, Tag
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.generics import ListAPIView
-from rest_framework.permissions import (IsAuthenticated,
-                                        IsAuthenticatedOrReadOnly)
+from rest_framework.permissions import (
+    IsAuthenticated,
+    IsAuthenticatedOrReadOnly
+)
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from users.models import Follow
+from recipes.models import (
+    Favorite,
+    Ingredient,
+    Recipe,
+    ShoppingList,
+    Tag
+)
 
 from .filters import IngredientSearchFilter, RecipeFilter
 from .permissions import IsAuthorOrAdminPermission
-from .serializers import (CustomUserSerializer, FavoriteSerializer,
-                          FollowSerializer, IngredientSerializer,
-                          RecipeCreateSerializer, RecipeSerializer,
-                          ShoppingListSerializer, TagSerializer)
+from .serializers import (
+    IngredientSerializer,
+    TagSerializer,
+    RecipeSerializer,
+    RecipeCreateSerializer,
+    FavoriteSerializer,
+    ShoppingListSerializer,
+    FollowSerializer,
+    CustomUserSerializer,
+)
 from .utils import get_shopping_list
 
 User = get_user_model()
